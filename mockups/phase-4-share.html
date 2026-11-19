@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morning Sales Email</title>
+<style>
+  :root {
+    --bg: #eef0f3; --panel: #ffffff; --ink: #1d2330; --muted: #667085; --line: #e3e6eb;
+    --side: #f7f8fa; --accent: #2f5bd3; --up: #137a3a; --up-bg: #e5f5eb; --down: #b42318; --down-bg: #fdecea;
+    --new: #5b4bb7; --new-bg: #efecfb; --warn-bg: #ffe066; --warn-ink: #4a3b00;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .banner { background: var(--warn-bg); color: var(--warn-ink); text-align: center; font-weight: 700;
+            padding: 10px 16px; border-bottom: 2px solid #e0b800; position: sticky; top: 0; z-index: 2; }
+  .banner small { display: block; font-weight: 400; }
+  .wrap { max-width: 1040px; margin: 24px auto; padding: 0 16px; }
+  .caption { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+
+  /* Inbox frame */
+  .inbox { display: grid; grid-template-columns: 300px 1fr; background: var(--panel);
+           border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+           box-shadow: 0 4px 18px rgba(20,30,50,.08); }
+  .list { background: var(--side); border-right: 1px solid var(--line); }
+  .list h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
+             margin: 0; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .item { padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  .item b { color: var(--ink); display: flex; justify-content: space-between; font-size: 14px; }
+  .item b span { font-weight: 400; color: var(--muted); font-size: 12px; }
+  .item.active { background: #e8eefc; border-left: 3px solid var(--accent); padding-left: 13px; }
+  .item.read b { font-weight: 500; }
+
+  .mail { padding: 22px 28px 28px; min-width: 0; }
+  .subject { font-size: 20px; font-weight: 650; margin: 0 0 10px; }
+  .meta { display: flex; gap: 12px; align-items: center; color: var(--muted); font-size: 13px;
+          padding-bottom: 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff;
+            display: grid; place-items: center; font-weight: 700; }
+  .meta .who b { color: var(--ink); }
+  .meta .when { margin-left: auto; }
+
+  .body { padding-top: 18px; max-width: 620px; }
+  .date { color: var(--muted); font-size: 14px; margin: 0 0 6px; }
+  .total { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 10px 0 20px; }
+  .total .label { color: var(--muted); font-size: 13px; }
+  .total .amount { font-size: 32px; font-weight: 700; letter-spacing: -.01em; }
+  .total .vs { font-size: 14px; color: var(--muted); }
+
+  h3 { font-size: 15px; margin: 18px 0 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-weight: 500; color: var(--muted); font-size: 12px; border-bottom: 1px solid var(--line); padding: 6px 4px; }
+  td { padding: 8px 4px; border-bottom: 1px solid var(--line); }
+  th.n, td.n { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td.rank { color: var(--muted); width: 22px; }
+  .more { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+
+  .chg { display: inline-block; min-width: 52px; text-align: center; font-weight: 650; font-size: 13px;
+         padding: 2px 8px; border-radius: 999px; }
+  .up { color: var(--up); background: var(--up-bg); }
+  .down { color: var(--down); background: var(--down-bg); }
+  .new { color: var(--new); background: var(--new-bg); }
+
+  .cta { display: inline-block; margin: 24px 0 8px; background: var(--accent); color: #fff; text-decoration: none;
+         font-weight: 650; padding: 11px 20px; border-radius: 8px; }
+  .foot { color: var(--muted); font-size: 12px; margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; }
+
+  /* Open questions */
+  .questions { margin-top: 24px; background: #fff8e1; border: 1px solid #f0d27a; border-radius: 10px; padding: 16px 20px; }
+  .questions h2 { margin: 0 0 8px; font-size: 17px; }
+  .questions ol { margin: 0; padding-left: 20px; }
+  .questions li { margin: 6px 0; }
+  .questions li span { color: var(--muted); }
+
+  @media (max-width: 760px) {
+    .inbox { grid-template-columns: 1fr; }
+    .list { display: none; }
+    .mail { padding: 18px 16px; }
+    .total .amount { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  Example data — not real sales
+  <small>Mockup for Phase 4 “Share it”. Stores, collections, amounts and addresses are all made up. Nothing is sent.</small>
+</div>
+
+<div class="wrap">
+  <p class="caption">What the sales team would see in their inbox on Thursday morning, 19 November 2026:</p>
+
+  <div class="inbox">
+    <aside class="list">
+      <h2>Inbox</h2>
+      <div class="item active">
+        <b>Daily sales report <span>07:30</span></b>
+        Wed 18 Nov: € 15,719.50 net, +8% vs last week
+      </div>
+      <div class="item read">
+        <b>Daily sales report <span>Wed</span></b>
+        Tue 17 Nov: € 13,902.10 net, −3% vs last week
+      </div>
+      <div class="item read">
+        <b>Daily sales report <span>Tue</span></b>
+        Mon 16 Nov: € 11,245.80 net, +5% vs last week
+      </div>
+      <div class="item read">
+        <b>Daily sales report <span>Mon</span></b>
+        Sun 15 Nov: € 9,630.45 net, +12% vs last week
+      </div>
+    </aside>
+
+    <main class="mail">
+      <h1 class="subject">Sales Wed 18 Nov: € 15,719.50 net (+8% vs last week)</h1>
+      <div class="meta">
+        <div class="avatar">S</div>
+        <div class="who"><b>Daily sales report</b> &lt;reports@example.com&gt;<br>to Sales team &lt;sales-team@example.com&gt;</div>
+        <div class="when">Thu 19 Nov 2026, 07:30</div>
+      </div>
+
+      <div class="body">
+        <p class="date">Wednesday 18 November 2026 · compared with Wednesday 11 November</p>
+
+        <div class="total">
+          <div class="label">Net sales, all stores (without VAT)</div>
+          <div class="amount">€ 15,719.50</div>
+          <div class="vs"><span class="chg up">+8%</span>&nbsp; vs € 14,517.05 same day last week</div>
+        </div>
+
+        <h3>Top 3 stores</h3>
+        <table>
+          <thead><tr><th></th><th>Store</th><th class="n">Yesterday</th><th class="n">Last week</th><th class="n">Change</th></tr></thead>
+          <tbody>
+            <tr><td class="rank">1</td><td>Riverside</td><td class="n">€ 4,862.40</td><td class="n">€ 4,190.15</td><td class="n"><span class="chg up">+16%</span></td></tr>
+            <tr><td class="rank">2</td><td>Harbour</td><td class="n">€ 3,915.70</td><td class="n">€ 4,120.90</td><td class="n"><span class="chg down">−5%</span></td></tr>
+            <tr><td class="rank">3</td><td>Old Town</td><td class="n">€ 3,288.25</td><td class="n">€ 2,705.60</td><td class="n"><span class="chg up">+22%</span></td></tr>
+          </tbody>
+        </table>
+        <p class="more">+ 2 more stores in the full report</p>
+
+        <h3>Top 3 collections</h3>
+        <table>
+          <thead><tr><th></th><th>Collection</th><th class="n">Yesterday</th><th class="n">Last week</th><th class="n">Change</th></tr></thead>
+          <tbody>
+            <tr><td class="rank">1</td><td>Outerwear</td><td class="n">€ 4,980.60</td><td class="n">€ 4,105.30</td><td class="n"><span class="chg up">+21%</span></td></tr>
+            <tr><td class="rank">2</td><td>Autumn Knits</td><td class="n">€ 3,742.10</td><td class="n">€ 3,940.75</td><td class="n"><span class="chg down">−5%</span></td></tr>
+            <tr><td class="rank">3</td><td>Kids Winter</td><td class="n">€ 2,610.00</td><td class="n">€ 0.00</td><td class="n"><span class="chg new">new</span></td></tr>
+          </tbody>
+        </table>
+        <p class="more">+ 3 more collections in the full report</p>
+
+        <a class="cta" href="#" onclick="return false;" title="Mockup: this link goes nowhere">Open the full report →</a>
+
+        <p class="foot">Amounts are net, without VAT. “Last week” is the same weekday one week earlier.
+          “new” means nothing was sold last week. Sent automatically every morning.</p>
+      </div>
+    </main>
+  </div>
+
+  <section class="questions">
+    <h2>Open questions</h2>
+    <ol>
+      <li><b>Who receives it?</b> <span>The whole sales team, store managers only, or a list someone keeps up to date?</span></li>
+      <li><b>What time is it sent?</b> <span>Before the stores open (e.g. 07:30)? Only after the night's export is ready?</span></li>
+      <li><b>Email or company chat?</b> <span>An email like the one above, or a post in a team chat channel?</span></li>
+      <li><b>Report in the message, or a link?</b> <span>Summary in the message plus a link (as shown), the full report in the message, or a file attached?</span></li>
+      <li><b>Days with no data?</b> <span>If the export is missing or empty (e.g. after a holiday): send nothing, send a “no data today” note, or alert one person?</span></li>
+    </ol>
+  </section>
+</div>
+
+</body>
+</html>
