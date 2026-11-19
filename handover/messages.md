@@ -12,19 +12,19 @@ Ready-to-send drafts. Replace [nome] / [name] and [o meu nome] / [my name] befor
 
 Olá [nome],
 
-Estou a criar uma página com as vendas diárias de cada loja.
+Estou a criar uma página de vendas diárias por loja.
 
-Funciona com dados de exemplo; faltam dados reais da Sage para confirmar os totais.
+Funciona com dados de exemplo; faltam dados reais da Sage para validar totais.
 
 Pode enviar-me:
 - produto e versão da Sage;
-- exportação CSV de um dia conhecido;
+- um CSV exportado de um dia conhecido;
 - total líquido desse dia na Sage;
 - que coluna é a loja e qual é a coleção.
 
 Um dia chega para começar. Use a partilha de ficheiros habitual, não o chat.
 
-Entretanto, sigo com os dados de exemplo.
+Entretanto, sigo com dados de exemplo.
 
 Cumprimentos,
 [o meu nome]
@@ -45,7 +45,7 @@ Could you send me:
 
 One day is enough to start. Please use our usual file sharing, not chat.
 
-Meanwhile, I'll keep working with example data.
+Meanwhile, I'll keep using example data.
 
 Thanks,
 [my name]
